@@ -38,6 +38,7 @@ def cart(request):
 
 
 def payment(request):
+    print('this is payment view')
     return render(request,'cart/payment.html')
 
 def remove_from_cart(request,id):
