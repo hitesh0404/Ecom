@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+        {% for i in n %}
+        <li
+            data-bs-target="#carouselId"
+            data-bs-slide-to="{{i}}"
+            class="active"
+          aria-current="true" 
+            aria-label="First slide"
+        ></li>
+        {% endfor %}
+           </ol> 
+    <div class="carousel-inner" role="listbox">
+        {% for c in car %}
+        <div class="carousel-item active">
+            <img
+                src="{{c.image.url}}"
+                class="w-100 d-block"
+                alt="First slide"
+            />
+            <div class="carousel-caption d-none d-md-block">
+                <h3>{{c.title | safe}}</h3>
+                <p>{{c.description | safe}}</p>
+            </div>
+        </div>
+        {% endfor %}
+       
+    </div>
+    <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselId"
+        data-bs-slide="prev"
+    >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselId"
+        data-bs-slide="next"
+    >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+
+
+
+
+<div class="row justify-content-center align-items-center g-2">
+{% for i in p %}
+    <div class="col">
+        <div class="card text-start">
+        <img class="card-img-top" src="{{i.image.url}}" alt="Title" height="200px"/>
+        <div class="card-body">
+            <h4 class="card-title">{{i.name}}</h4>
+            <p class="card-text">{{i.description}}</p>
+        </div>
+    </div>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

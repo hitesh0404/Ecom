@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Product details</h2>
+<div class="row">
+    <div class="col">
+        <img src="{{product.image.url}}" alt="">
+    </div>
+    <div class="col">
+        <h3>{{product.name}}</h3>
+        <h6>{{product.price}}</h6>
+        <p>{{product.description}}</p>
+        <p>From: {{product.brand.name}}</p>
+<a href="{% url 'remove-product' product.id %}">Remove Product</a>&nbsp;&nbsp;
+<a href="{% url 'update-product' product.id %}">Update Product</a>
+<button><a href="{% url 'add-to-cart' product.id %}">Add to Cart</a></button>
+      
+    </div>
+</div>
+
+
+
+{% endblock %}

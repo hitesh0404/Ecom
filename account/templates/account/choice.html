@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<button onclick="window.location.href='/'">
+Supplier
+</button>
+
+<button onclick="window.location.href='/'">
+    Customer
+    </button>
+<div class="mx-5 my-5">
+    
+    <a href="{% url 'register_user' 'customer' %}" style = "background-color: aqua;
+     margin-top :200px; width:200px; border:2px solid black; padding: 14px 25px; 
+     text-align: center;text-decoration: none; ">Customer</a>
+   
+</div>
+<div class=" mx-5 my-5">
+    
+    <a href="{% url 'register_user' 'supplier' %}"
+     style = "background-color: aqua; margin:20px; 
+     width:200px; border:2px solid black; padding: 14px 25px; 
+     text-align: center; text-decoration: none;">Suuplier</a>
+   
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>
+            <p>Update Products</p>
+        </h1>
+      
+        <form method="post" enctype="multipart/form-data" action="">
+            {% csrf_token %}
+            {% for fields in form %}
+           <h3 style=""> {{ fields.label_tag }}</h3>
+            {{ fields }}
+            {{ fields.errors }}
+            {% endfor %}
+
+            <input type="submit" value="Save"  >
+        </form>
+        
+{% endblock %}
+
+
