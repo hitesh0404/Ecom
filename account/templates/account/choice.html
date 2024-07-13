@@ -12,17 +12,25 @@ Supplier
     </button>
 <div class="mx-5 my-5">
     
-    <a href="{% url 'register_user' 'customer' %}" style = "background-color: aqua;
+    <a href="{% if request_for == 'register' %}
+    {% url 'register_user' 'customer' %}
+    {% else %}
+    {% url 'login_user' 'customer' %}
+    {% endif %}" style = "background-color: aqua;
      margin-top :200px; width:200px; border:2px solid black; padding: 14px 25px; 
      text-align: center;text-decoration: none; ">Customer</a>
    
 </div>
 <div class=" mx-5 my-5">
     
-    <a href="{% url 'register_user' 'supplier' %}"
+    <a href="{% if request_for == 'register' %}
+    {% url 'register_user' 'supplier' %}
+    {% else %}
+    {% url 'login_user' 'supplier' %}
+    {% endif %}"
      style = "background-color: aqua; margin:20px; 
      width:200px; border:2px solid black; padding: 14px 25px; 
-     text-align: center; text-decoration: none;">Suuplier</a>
+     text-align: center; text-decoration: none;">Supplier</a>
    
 </div>
 

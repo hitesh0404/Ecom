@@ -5,9 +5,13 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('login/',views.LoginView.as_view(),name='login'),
-    path('register/',TemplateView.as_view(template_name = 'account/choice.html'),name='register'),
+    # path('login/',views.LoginView.as_view(),name='login'),
+    # path('register/',TemplateView.as_view(template_name = 'account/choice.html'),name='register'),
+    path('register/choice/<str:request_for>/',views.choice,name='register'),
+    path('login/choice/<str:request_for>/',views.choice,name='login'),
     path('register/<str:user_type>/', views.register_user, name='register_user'),
+    path('login/<str:user_type>/', views.LoginView.as_view(), name='login_user'),
+
     # path('register/supplier',views.register_supplier,name='register-supplier'),
     # path('register/customer',views.register_customer,name='register-customer'),
     # path('register/',views.register_user,name='register'),

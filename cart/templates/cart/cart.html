@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load total %}
 {% block content %}
 <h2>cart page</h2>
 {% if cart %}
@@ -9,9 +10,11 @@
         <h5 class="card-title">{{ item.product.name }}</h5>
         <p class="card-text">price: {{ item.product.price }}</p>
         <p class="card-text">quantity: {{ item.quantity }}</p>
-        <p class="card-text">total: {{ item.total }}</p>
+        <p class="card-text">total: {{ item.product.price|total:item.quantity }}</p>
         <a href="{% url 'remove-from-cart' item.product.id %}" class
         ="btn btn-primary">remove</a>
+        <a class ="btn btn-primary" href="{% url 'decrease-quantity' item.product.id %}">&#9473;</a>
+        <a class="btn btn-danger"href="{% url 'increase-quantity' item.product.id %}">&#9547;</a>
         </div>
     </div>
 </div>

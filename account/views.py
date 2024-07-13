@@ -1,19 +1,32 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from .forms import LoginForm,RegisterCustomer,RegisterSupplier
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from django.views import View
-
+from .models import Customer,Supplier
 # Create your views here.
 class LoginView(View):
-    def get(self,request):
-        form = LoginForm()
-        return render(request,'account/login.html',{'form':form})
-    def post(self,request):
+    def get(self,request,user_type):
+        context={
+            'form' :LoginForm(),
+            'user_type':user_type,
+        }
+        return render(request,'account/login.html',context)
+    def post(self,request,user_type):
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form['username'].value()
             password = form['password'].value()
+           
+            u= get_object_or_404(User,username=username)
+            if user_type == 'customer':
+                if hasattr(u,'customer'):
+                    request.session['user_type']='customer'
+            elif user_type=='supplier':
+                if hasattr(u,'supplier'):
+                    request.session['user_type']='supplier'
+
+                    
             user = authenticate(request,username=username,password=password)
             print(type(user))
             if user:
@@ -52,7 +65,7 @@ def register_user(request):
     
 def logout_user(request):
     logout(request)
-    return redirect('login')
+    return redirect('login','customer')
     
 
 # def register_supplier(request):
@@ -112,3 +125,12 @@ def register_user(request, user_type):
             return redirect('login')
         else:
             return render(request, 'account/register.html', {'form': form, 'user_type': user_type})
+
+
+
+
+def choice(request,request_for):
+    context={
+        'request_for':request_for
+    }
+    return render(request,'account/choice.html',context)
