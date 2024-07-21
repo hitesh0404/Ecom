@@ -3,6 +3,7 @@ from .forms import LoginForm,RegisterCustomer,RegisterSupplier
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout,get_user_model
 from django.views import View
+from django.http import HttpResponse
 from .models import Customer,Supplier
 # Create your views here.
 class LoginView(View):
@@ -25,6 +26,8 @@ class LoginView(View):
             elif user_type=='supplier':
                 if hasattr(u,'supplier'):
                     request.session['user_type']='supplier'
+            else:
+                return HttpResponse('You are not Customer Nor Supplier')
 
                     
             user = authenticate(request,username=username,password=password)
@@ -122,7 +125,7 @@ def register_user(request, user_type):
         form = form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('login')
+            return redirect(login)
         else:
             return render(request, 'account/register.html', {'form': form, 'user_type': user_type})
 

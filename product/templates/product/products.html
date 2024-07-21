@@ -43,27 +43,83 @@
 
         </tbody>
     </table> -->
-    <div
-    class="row justify-content-center align-items-center g-2">
-
-    {% for product in products %}
-        <div class="col-4">
-            <div class="card text-start">
-                <img class="card-img-top" src="{{ product.image.url }}" height="228.67  " alt="Title" />
-                <div class="card-body">
-                    <h4 class="card-title">{{ product.name}}</h4>
-                    <p>{% if product.brand.logo %}
-                        <img src="{{product.brand.logo.url}}" height="20" width="20"
-                             alt="no image">
+    <div class="container-fluid">
+        <div class="row justify-content-center  g-2 ">
+            <div class="col-2">
+                <h3>
+                    Filter Product By Category
+                </h3>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="{% url 'show-product' %}">
+                            All
+                        </a>
+                    </li>
+                    {% for category in categories %}
+                    {% if category.name == request.path|cut:"/product/serach_product/category/" %}
+                    <li style="background-color: aqua;" class="list-group-item">
+                        <a  href="{% url 'category' category.name %}">
+                            {{category.name}}
+                        </a>
+                        {% else %}
+                        <li class="list-group-item">
+                        <a href="{% url 'category' category.name %}">
+                            {{category.name}}
+                        </a>
                         {% endif %}
-                    </p>
-                    <a href="/product/details/{{product.id}}">Details</a>
-                    <p class="card-text">{{product.description}}</p>
-                </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h3>{% if brands %}
+                    Filter Product By Brand
+                </h3>
+                {% endif %}
+                <ul class="list-group">
+                    <li class="list-group-item">
+                     {% comment %}   <!-- <a href="{% url request.path|slice:'32:' %}"> -->
+                            All
+                        <!-- </a> -->
+                    </li>{% endcomment %}
+                    {% for brand in brands %}
+                    {% if brand == request.path|cut:"/product/serach_product/category/request.session.category/brand/" %}
+                    <li style="background-color: aqua;" class="list-group-item">
+                        <a  href="{% url 'brand' brand %}">
+                            {{brand}}
+                        </a>
+                        {% else %}
+                        <li class="list-group-item">
+                        <a href="{% url 'brand' brand %}">
+                            {{brand}}
+                        </a>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+           
+        </div>
+        
+        <div class="col-10">
+            <div class="row">
+                {% for product in products %}
+                    <div class="col-4">
+                        <div class="card text-start">
+                            <img class="card-img-top" src="{{ product.image.url }}" height="228.67  " alt="Title" />
+                            <div class="card-body">
+                                <h4 class="card-title">{{ product.name}}</h4>
+                                <p>{% if product.brand.logo %}
+                                    <img src="{{product.brand.logo.url}}" height="20" width="20"
+                                        alt="no image">
+                                    {% endif %}
+                                </p>
+                                <a href="/product/details/{{product.id}}">Details</a>
+                                <p class="card-text">{{product.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
-    {% endfor %}
-</div>
+    </div>
 <a href="{% url 'add-product' %}">Add Product</a>
 
 </div>

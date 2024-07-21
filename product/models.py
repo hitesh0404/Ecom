@@ -47,4 +47,3 @@ class Product(models.Model):
     quantity = models.IntegerField(default=0)
     def __str__(self) -> str:
         return "name is {} and Price is {} $".format(self.name,self.price)
-  

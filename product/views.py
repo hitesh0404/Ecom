@@ -3,7 +3,7 @@ from django.http import HttpResponse,FileResponse
 from django.shortcuts import render,redirect,get_object_or_404
 from .forms import ProductForm
 import os
-from .models import Product
+from .models import Product,Category,Brand
 
 # Create your views here.
 # '''
@@ -45,12 +45,37 @@ from .models import Product
 def show_product(request):
     # name="ITVedant"
     p=Product.objects.all() #select * from Product
+    categories = Category.objects.all()
     context = {
-        'products':p
+        'products':p,
+        'categories':categories
     }
     return render(request,"product/products.html",context)
 
+def filter_product_by_category(request,name):
+    category = get_object_or_404(Category,name=name)  #electronic
+    products = category.product_set.all()             #product which comes under electronic
+    categories = Category.objects.all()                # all category
+    brands = {i.brand.name for i in products.select_related('brand')}  #all the brand of filtered product 
 
+    context = {
+        'products':products,
+        'category':category,
+        'categories':categories,
+        'brands':brands
+        }
+    return render(request,"product/products.html",context)
+def filter_product_by_brand(request,name,category):
+    pass
+#     # brand = get_object_or_404(Brand,name=name)
+#     category = get_object_or_404(Category,name=name)
+#     products = category.product_set.all()
+#     context = {
+#         'products':products,
+#         'category':category,
+#         'categories':categories
+#         }
+#     return render(request,"product/products.html",context)
 def add_product(request):
     if request.method == 'GET':
         context={
