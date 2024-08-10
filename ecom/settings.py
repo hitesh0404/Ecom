@@ -87,9 +87,9 @@ WSGI_APPLICATION = 'ecom.wsgi.application'
 #         "ENGINE": "django.db.backends.mysql",
 #         "OPTIONS": {
 #            'database': 'myecom',
-# 'user' :'root',
-# 'password' : '',
-# # 'default-character-set = utf8
+#             'user' :'root',
+#             'password' : '',
+# #           'default-character-set = utf8
 #         },
 #     }
 # }

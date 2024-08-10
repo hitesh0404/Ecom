@@ -65,17 +65,23 @@ def filter_product_by_category(request,name):
         'brands':brands
         }
     return render(request,"product/products.html",context)
-def filter_product_by_brand(request,name,category):
-    pass
-#     # brand = get_object_or_404(Brand,name=name)
-#     category = get_object_or_404(Category,name=name)
-#     products = category.product_set.all()
-#     context = {
-#         'products':products,
-#         'category':category,
-#         'categories':categories
-#         }
-#     return render(request,"product/products.html",context)
+def filter_product_by_brand(request,name,b_name):
+    brand = get_object_or_404(Brand,name=b_name)      #samsung
+    # products = brand.product_set.all()
+    category = get_object_or_404(Category,name=name)  #electronic
+    products = category.product_set.all()  #product which comes under electronic
+    brands = {i.brand.name for i in products.select_related('brand')}  
+    # products = products.filter(brand=brand)
+    products = list(filter(lambda p:True if p.brand == brand else False,products))
+    categories = Category.objects.all()                # all category
+    context = {
+         'products':products,
+         'category':category,
+         'categories':categories,
+         'brands':brands,
+
+         }
+    return render(request,"product/products.html",context)
 def add_product(request):
     if request.method == 'GET':
         context={

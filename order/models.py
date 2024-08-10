@@ -36,7 +36,7 @@ class Shipping(models.Model):
     method = models.CharField(choices=SHIPPING_METHOD_CHOICES,max_length=20)
     charges = models.IntegerField(default=0)
     def save(self,*args,**kwargs):
-        self.charges = SHIPPING_CHARGES_CHOICES[self.method]
+        self.charges = SHIPPING_CHARGES_CHOICES.get(self.method)
         super(Shipping,self).save(*args,**kwargs)
     def __str__(self) -> str:
         return self.method +' ' + str(self.charges)
@@ -45,7 +45,7 @@ class Order(models.Model):
     date_time = models.DateTimeField(auto_now_add=True)
     address = models.ForeignKey(Address,on_delete=models.DO_NOTHING)
     payment = models.ForeignKey(Payment,on_delete=models.DO_NOTHING,null=True,blank=True)
-    order_status = models.OneToOneField(OrderStatus,on_delete=models.DO_NOTHING)
+    order_status = models.ForeignKey(OrderStatus,on_delete=models.DO_NOTHING)
     shipping = models.ForeignKey(Shipping,on_delete=models.DO_NOTHING)
 
 class OrderItem(models.Model):

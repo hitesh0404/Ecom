@@ -71,7 +71,7 @@
                     {% endfor %}
                 </ul>
                 <h3>{% if brands %}
-                    Filter Product By Brand
+                    Filter {{request.path|slice:"33:" }} Product By Brand
                 </h3>
                 {% endif %}
                 <ul class="list-group">
@@ -83,12 +83,12 @@
                     {% for brand in brands %}
                     {% if brand == request.path|cut:"/product/serach_product/category/request.session.category/brand/" %}
                     <li style="background-color: aqua;" class="list-group-item">
-                        <a  href="{% url 'brand' brand %}">
+                        <a  href="{% url 'brand' category brand %}">
                             {{brand}}
                         </a>
                         {% else %}
                         <li class="list-group-item">
-                        <a href="{% url 'brand' brand %}">
+                        <a href="{% url 'brand' category brand %}">
                             {{brand}}
                         </a>
                         {% endif %}
