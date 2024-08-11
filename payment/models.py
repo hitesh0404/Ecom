@@ -14,6 +14,8 @@ PAYMENT_METHOD_CHOICE = (
     ('net_banking','net_banking')
 )
 class Payment(models.Model):
+    payment_id = models.CharField(max_length=128,default='0')
+    payment_signature = models.CharField(max_length=128,default='0')
     user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     payment_date = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
