@@ -2,7 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 
 from account.models import Carousel
-from product.models import Product              #
+from product.models import Product  
+            #
 def home(request):
     # return HttpResponse("Hello world")
     # content={'name':'ItVedant'}

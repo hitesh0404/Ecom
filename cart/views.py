@@ -3,10 +3,10 @@ from .models import Cart,Customer,Product
 from django.contrib.auth.models import User
 from order.models import Order,OrderItem
 from account.models import Address
-# Create your views here.
+from django.contrib import messages 
+from django.views.decorators.csrf import csrf_exempt
 
 
-# Create your views here.
 def add_to_cart(request,id):
     # user = User.objects.get(username=request.user)
     # customer_object = Customer.objects.get(user=user.id)
@@ -101,14 +101,14 @@ def checkout(request):
         shipping = Shipping.objects.get(id= 1)
 
         order = Order(
-            uuid= str(uuid.uuid4().hex),
+            uuid= str(uuid.uuid4().hex),                #
             user=customer_object.user,
             address = address,
             order_status = order_status,
             shipping=shipping,
             amount = 0  )
         order.save()       
-        total =0                       #
+        total =0                     
         for item in cart:
                 price= Product.objects.get(id = item.product.id).price
                 total = total + (item.quantity * price)
@@ -119,9 +119,16 @@ def checkout(request):
         data = { "amount":int(total)*100, "currency": "INR", "receipt": order.uuid  }      #
         payment = client.order.create(data=data)
         order.payment_id = payment.get('id')                  #
-        order.amount=total                              #
-        order.save()                                    #
+        order.amount=total                           
+        order.save()                                
         return render(request,'cart/payment.html',{'total': total,'payment':payment})
     else:
         address = Address.objects.filter(user=request.user)
+        if not address:
+            messages.error('please add atleast one address into your profile')
+            return redirect('home')
         return render(request,'cart/checkout.html',{'address':address})
+    
+@csrf_exempt
+def success(request):
+    return redirect('home')
