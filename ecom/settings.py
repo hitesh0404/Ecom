@@ -143,6 +143,12 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
+
+RAZORPAY_KEY_ID='rzp_test_CsuGslmdozGNld'
+RAZORPAY_KEY_SECRET='wC5RAX8qpYzKyY1SFv7RZ9Rj'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 

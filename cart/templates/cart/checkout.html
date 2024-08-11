@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    <select name="address" id="">
+        {% for option in address %}
+        <option value="{{ option.id }}">{{ option.title }}</option>
+        {% endfor %}
+
+    </select>
+<input type="submit">
+</form>
+
+{% endblock %}

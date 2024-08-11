@@ -1,7 +1,8 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Cart,Customer,Product
 from django.contrib.auth.models import User
-
+from order.models import Order,OrderItem
+from account.models import Address
 # Create your views here.
 
 
@@ -86,3 +87,41 @@ def decrease_quantity(request,id):
         'cart':cart
         }
     return render(request,'cart/cart.html',context)
+from order.models import OrderStatus,Shipping
+import uuid
+from django.conf import settings
+def checkout(request):
+    if request.method == 'POST':
+        customer_object = Customer.objects.select_related('user').get(user=request.user)
+        cart = Cart.objects.filter(user=customer_object)
+        
+        add_id = request.POST.get('address')
+        address = Address.objects.get(id = add_id)
+        order_status = OrderStatus.objects.get(id= 1)
+        shipping = Shipping.objects.get(id= 1)
+
+        order = Order(
+            uuid= str(uuid.uuid4().hex),
+            user=customer_object.user,
+            address = address,
+            order_status = order_status,
+            shipping=shipping,
+            amount = 0  )
+        order.save()       
+        total =0                       #
+        for item in cart:
+                price= Product.objects.get(id = item.product.id).price
+                total = total + (item.quantity * price)
+                order_item_obj = OrderItem(order=order,product=item.product,quantity = item.quantity)
+                order_item_obj.save()
+        import razorpay
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        data = { "amount":int(total)*100, "currency": "INR", "receipt": order.uuid  }      #
+        payment = client.order.create(data=data)
+        order.payment_id = payment.get('id')                  #
+        order.amount=total                              #
+        order.save()                                    #
+        return render(request,'cart/payment.html',{'total': total,'payment':payment})
+    else:
+        address = Address.objects.filter(user=request.user)
+        return render(request,'cart/checkout.html',{'address':address})

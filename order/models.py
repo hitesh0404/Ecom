@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from account.models import Address
-from payment.models import Payment
+# from payment.models import Payment
 from product.models import Product
 # Create your models here.
 ORDER_STATUS_CHOICES = [
@@ -41,10 +41,13 @@ class Shipping(models.Model):
     def __str__(self) -> str:
         return self.method +' ' + str(self.charges)
 class Order(models.Model):
+    uuid = models.CharField(max_length=128,default='0',)
+    payment_id = models.CharField(max_length=100,default=0,null=True)
     user = models.ForeignKey(User,on_delete=models.DO_NOTHING)
     date_time = models.DateTimeField(auto_now_add=True)
     address = models.ForeignKey(Address,on_delete=models.DO_NOTHING)
-    payment = models.ForeignKey(Payment,on_delete=models.DO_NOTHING,null=True,blank=True)
+    amount = models.DecimalField(decimal_places=2,default=0.00,max_digits=10)
+    # payment = models.ForeignKey(Payment,on_delete=models.DO_NOTHING,null=True,blank=True)
     order_status = models.ForeignKey(OrderStatus,on_delete=models.DO_NOTHING)
     shipping = models.ForeignKey(Shipping,on_delete=models.DO_NOTHING)
 

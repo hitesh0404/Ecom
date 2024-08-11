@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-# from order.models import Order
+from order.models import Order
 # Create your models here.
 PAYMENT_STATUS_CHOICE = (
     ('pending','pending'),
@@ -20,7 +20,7 @@ class Payment(models.Model):
     amount = models.DecimalField(decimal_places=2,max_digits=12)
     status = models.CharField(choices=PAYMENT_STATUS_CHOICE,max_length=20,default='pending')
     method = models.CharField(max_length=20,choices=PAYMENT_METHOD_CHOICE)
-    
+    order = models.ForeignKey(Order,on_delete=models.DO_NOTHING,default=0)
     def __str__(self):
         return self.user + ' paid ' + self.amount + ' on ' + self.last_update + ' and current status is ' + self.status
 class Coupon(models.Model):
