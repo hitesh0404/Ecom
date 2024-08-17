@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout,get_user_model
 from django.views import View
 from django.http import HttpResponse
 from .models import Customer,Supplier
+from django.contrib import messages
 # Create your views here.
 class LoginView(View):
     def get(self,request,user_type):
@@ -35,7 +36,8 @@ class LoginView(View):
             if user:
                 login(request, user)
                 return redirect('index')
-            return redirect('login')
+            messages.error(request,'wrong Credentials')
+            return choice(request,'login')
         else:
             return render(request,'account/login.html',{'form':form})
 
@@ -137,3 +139,71 @@ def choice(request,request_for):
         'request_for':request_for
     }
     return render(request,'account/choice.html',context)
+
+from random import randint
+def generate_otp(request):
+    otp = randint(1000,9999)
+    request.session['otp']=str(otp)
+    print(otp)
+    request.session['attempts']='3'
+
+class ResetPassword(View):
+    def get(self, request):
+        username = request.GET.get('username')
+        user = get_object_or_404(User,username = username )
+        # user = User.objects.filter(username=username)
+        # if user:
+        #     # token = PasswordResetTokenGenerator().make_token(user[0])
+        #     # email = EmailMessage('Reset Password', f'Your reset password token is {token}', to
+        #     #                      [user[0].email])
+        #     # email.send()
+        #     user = user[0]
+        # else:
+        #     messages.error(request,"something Went Wrong")
+        #     return choice(request,'login')
+        request.session['username']=user.username
+        
+        if user.email :
+            request.session['email']=user.email
+            return render(request,'account/verify_email.html')
+        else:
+            messages.error(request,"Can't procced with this username provided by you")
+            return choice(request,'login')
+    def post(self,request):
+        email=request.session.get('email')
+        user_provided_email = request.POST.get('email')
+        if user_provided_email == email:
+            generate_otp(request)
+            return render(request,'account/verify_otp.html')
+        else:
+            messages.error(request,"Can't procced with this username provided by you")
+            return choice(request,'login')
+
+
+def verify_otp(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        if otp == request.session.get('otp'):
+            return render(request,'account/change_password.html')
+        elif  int(request.session['attempts'])>1 :
+            request.session['attempts']=str(int(request.session['attempts'])-1)
+            return render(request,'account/verify_otp.html')
+        else:
+            messages.error(request,"Something Went Wrong")
+            return choice(request,'login')
+            
+
+def change_password(request):
+    username = request.session['username']
+    if request.method == 'POST' and username:
+        password = request.POST.get('new_password')
+        user = get_object_or_404(User,username=username)
+        user.set_password(password)
+        print(password)
+        user.save()
+        messages.success(request,"Password Reset Successfully")
+        return choice(request,'login')
+    else:
+        messages.error(request, "Invalid OTP")
+        return choice(request,'login')
+    

@@ -25,7 +25,19 @@
             {{field.errors}}
         {% endif %}
         {% endfor %}
-
+        <div id="reset-password-link" class="mt-5 mb-3 text-body-secondary"></div> 
+        <script>
+            document.getElementById('id_username').addEventListener('input', function() {
+              const username = this.value;
+              const linkElement = document.getElementById('reset-password-link');
+              
+              // Assuming the base URL for reset_password is something like '/reset_password/'
+              const baseURL = '/account/reset_password/';
+              const url = `${baseURL}?username=${encodeURIComponent(username)}`;
+              
+              linkElement.innerHTML = `<a href="${url}">Forgot Password? Reset</a>`;
+            });
+          </script>
 <input type="submit">
 </form>
 

@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
-
+from django.contrib.auth.decorators import login_required
 from account.models import Carousel
 from product.models import Product  
             #
@@ -22,13 +22,14 @@ def home(request):
 def about_us(request):
     return render(request,'about_us.html')
 
+
 def contact_us(request):
     return render(request,'contact_us.html')
 
 
 
 
-from .forms import LoginForm
+# from .forms import LoginForm
 
-def form(request):
-    return render(request, 'form.html',{'form':LoginForm()})
+# def form(request):
+#     return render(request, 'form.html',{'form':LoginForm()})

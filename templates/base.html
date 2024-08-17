@@ -81,7 +81,16 @@
 
 
 
-
+    {% if messages %}
+      {% for message in messages %}
+        <div class="{{message.tags}}" style="margin: 20px 120px; ">
+          
+          <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+            <strong>{{ message }}</strong>
+        
+        </div>
+      {% endfor %}   
+    {% endif %}
 
 
 

@@ -28,7 +28,7 @@ urlpatterns = [
     path('product/',include('product.urls')),
     path('account/',include('account.urls')),
     path('cart/',include('cart.urls')),  
-    path('form/',views.form,name='form'),
+    # path('form/',views.form,name='form'),
 ]
 
 from django.conf import settings

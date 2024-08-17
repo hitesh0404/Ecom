@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>
+    Verify Email
+</h3>
+<form action="" method="post">
+    {% csrf_token %}
+    <input type="email" name="email" >
+    <input type="submit">
+</form>
+
+{% endblock %}
